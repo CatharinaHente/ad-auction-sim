@@ -14,8 +14,8 @@ def simple_valuation(
     # directly passed to the simulator which provides ctrs per bidder.
     return sum(bidder.targeting.get(tag, 0.0) for tag in adspot.tags)
 
-
-def run_simulations(config: ExperimentConfig) -> dict[str, Any]:
+    
+def run_simulations(config: ExperimentConfig, platform_cls = Platform) -> dict[str, Any]:
     """Run the configured auction experiment and collect summary statistics.
 
     Args:
@@ -26,16 +26,18 @@ def run_simulations(config: ExperimentConfig) -> dict[str, Any]:
     Returns:
         Dictionary mapping each auction method to its summary statistics.
     """
+    
     random.seed(config.seed)
 
     bidders = [
         Bidder(name, targeting) for name, targeting in config.bidder_targeting.items()
     ]
 
+    platform = platform_cls(bidders)
+    
     results = {}
 
     for method in config.methods:
-        platform = Platform(bidders)
 
         counts = {gender: Counter() for gender in config.genders}
         total_spend = Counter()

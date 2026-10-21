@@ -8,6 +8,7 @@ dependencies = [
     "ipykernel>=6.29.0",
     "matplotlib>=3.11.2",
     "pytest>=9.1.1",
+    "scipy>=1.18.1",
 ]
 
 [build-system]
